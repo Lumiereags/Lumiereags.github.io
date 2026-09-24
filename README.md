@@ -1,23 +1,16 @@
 # Portfolio — Lumière Agonsanou
 
-Site statique (HTML/CSS, sans dépendance) prévu pour GitHub Pages.
+Étudiant ingénieur ESEO en électronique embarquée (hardware et firmware).
 
-## Ajouter les photos
-Dépose les images dans `assets/img/` avec ces noms exacts (jpg, ~1200 px de large, < 300 Ko) :
 
-| Fichier            | Projet                                  |
-|--------------------|-----------------------------------------|
-| `japon.jpg`        | Plateforme multi-axes (Galipon Lab)     |
-| (schéma SVG intégré) | Projet BLE nRF52 : pas de photo requise |
-| `fpga.jpg`         | Carte Basys 3 / écran Pong              |
-| `ventilateur.jpg`  | Ventilateur + écran TFT                 |
+🔗 **Site : https://lumiereags.github.io**
 
-Tant qu'une image manque, un cadre « Photo à venir » s'affiche à sa place.
+## Projets présentés
+- **OptiSphere V4** : plateforme sphérique multi-axes pour l'observation biologique (Université de Yamagata, SI2025)
+- **Chaîne de mesure BLE sur nRF52** : capteurs I2C, driver OLED SPI maison, liaison BLE
+- **Projets FPGA sur Basys 3** : acquisition de capteurs et Pong en VHDL
+- **Ventilateur autonome** : ESP32, régulation PWM, interface TFT, mécanique imprimée en 3D
+- **TripFlex** : prototype d'application mobile full-stack
 
-## À compléter
-- Aucun élément à compléter.
-
-## Mise en ligne
-1. Créer un dépôt public nommé `Lumiereags.github.io`.
-2. Y pousser le contenu de ce dossier (index.html à la racine).
-3. Le site est en ligne sur `https://lumiereags.github.io` en une à deux minutes.
+## Contact
+[LinkedIn](https://www.linkedin.com/in/lumi%C3%A8re-agonsanou-0b9336237/) · lumiereagonsanou20@gmail.com
