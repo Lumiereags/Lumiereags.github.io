@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lumière Agonsanou, ingénieur électronique embarquée</title>
+<meta name="description" content="Portfolio de Lumière Agonsanou, étudiant ingénieur ESEO en électronique embarquée : PCB, firmware, FPGA. Recherche un stage de fin d'études à partir de février 2027.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@87,500;87,700;100,700&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#172234; --muted:#56606E; --navy:#1F3A68; --mask:#2A6E5C;
+  --copper:#B5733A; --paper:#F7F8F6; --line:#D9DED9; --white:#FFFFFF;
+  --head:"Archivo", "Arial Narrow", Arial, sans-serif;
+  --body:"IBM Plex Sans", "Segoe UI", Roboto, Arial, sans-serif;
+  --w:1080px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{margin:0;background:var(--paper);color:var(--ink);font:400 1rem/1.6 var(--body)}
+img{max-width:100%;display:block}
+a{color:var(--navy)}
+a:focus-visible,button:focus-visible{outline:2px solid var(--copper);outline-offset:3px;border-radius:2px}
+.wrap{max-width:var(--w);margin:0 auto;padding:0 24px}
+h1,h2,h3{font-family:var(--head);font-stretch:87%;line-height:1.15;margin:0}
+h2{font-size:clamp(1.6rem,3vw,2.1rem);color:var(--navy);margin-bottom:28px}
+h3{font-size:1.35rem;font-stretch:100%}
+p{margin:0 0 12px;max-width:68ch}
+
+/* Navigation */
+nav{position:sticky;top:0;z-index:10;background:rgba(247,248,246,.94);backdrop-filter:blur(6px);border-bottom:1px solid var(--line)}
+nav .wrap{display:flex;align-items:center;justify-content:space-between;height:56px}
+nav .brand{white-space:nowrap;font-family:var(--head);font-weight:700;font-stretch:87%;font-size:1.1rem;color:var(--ink);text-decoration:none}
+nav ul{display:flex;gap:22px;list-style:none;margin:0;padding:0}
+nav ul a{color:var(--muted);text-decoration:none;font-size:.93rem}
+nav ul a:hover{color:var(--navy)}
+@media (max-width:640px){nav ul{gap:14px} nav ul li:nth-child(2),nav ul li:nth-child(3){display:none}}
+
+/* Hero : la piste de cuivre est l'élément signature */
+.hero{position:relative;padding:72px 0 96px;overflow:hidden}
+.hero .wrap{display:grid;grid-template-columns:auto 1fr;gap:40px;align-items:center;position:relative;z-index:1}
+.hero .portrait{width:176px;height:176px;border-radius:50%;object-fit:cover;border:4px solid var(--white);box-shadow:0 0 0 2px var(--copper)}
+.hero h1{font-size:clamp(2.4rem,6vw,4.2rem);font-stretch:87%;letter-spacing:-.01em;color:var(--ink)}
+.hero .role{font-size:1.2rem;color:var(--navy);margin:8px 0 16px;font-weight:500}
+.hero .dispo{display:inline-block;border-left:3px solid var(--mask);padding:4px 0 4px 12px;color:var(--ink);margin-bottom:24px}
+.actions{display:flex;flex-wrap:wrap;gap:10px}
+.btn{display:inline-block;padding:10px 18px;border:1.5px solid var(--navy);border-radius:4px;text-decoration:none;font-weight:600;font-size:.95rem}
+.btn.primary{background:var(--navy);color:var(--white)}
+.btn:not(.primary){color:var(--navy);background:transparent}
+.btn:hover{background:var(--ink);border-color:var(--ink);color:var(--white)}
+.trace{position:absolute;left:0;right:0;bottom:0;width:100%;height:60px;z-index:0;pointer-events:none}
+.trace path{fill:none;stroke:var(--copper);stroke-width:2;stroke-linejoin:round;vector-effect:non-scaling-stroke;opacity:.6}
+@media (prefers-reduced-motion:no-preference){
+  .trace path{stroke-dasharray:1;stroke-dashoffset:1;animation:route 1.8s .2s ease-out forwards}
+  @keyframes route{to{stroke-dashoffset:0}}
+}
+@media (max-width:720px){
+  .hero{padding:40px 0 80px}
+  .hero .wrap{grid-template-columns:1fr;gap:24px}
+  .hero .portrait{width:132px;height:132px}
+}
+
+section{padding:64px 0;border-top:1px solid var(--line)}
+
+/* Projets phares : rangées alternées */
+.projet{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start;padding:36px 0;border-bottom:1px dashed var(--line)}
+.projet:last-of-type{border-bottom:0}
+.projet:nth-of-type(even) .visuel{order:2}
+.visuel{margin:0;position:relative;aspect-ratio:4/3;background:var(--white);border:1px solid var(--line);border-radius:4px;overflow:hidden}
+.visuel img{width:100%;height:100%;object-fit:cover}
+.visuel.contain img{object-fit:contain;background:#fff}
+.credit{position:absolute;right:8px;bottom:6px;font-size:.72rem;color:var(--muted);background:rgba(255,255,255,.85);padding:1px 6px;border-radius:2px}
+.visuel.schema{display:grid;place-items:center;padding:12px}
+.visuel.schema svg{width:100%;height:100%}
+.visuel.empty img{display:none}
+.visuel.empty::after{content:attr(data-label);position:absolute;inset:0;display:grid;place-items:center;text-align:center;padding:20px;color:var(--muted);font-size:.9rem;
+  background:repeating-linear-gradient(45deg,transparent 0 10px,rgba(42,110,92,.05) 10px 20px);border:1px dashed var(--mask)}
+.galerie{display:grid;gap:12px}
+.galerie .visuel{order:0}
+.vignettes{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.vignettes img.poster{object-position:top}
+.vignettes figure{margin:0}
+.vignettes img{width:100%;aspect-ratio:4/3;object-fit:cover;object-position:top;border:1px solid var(--line);border-radius:4px}
+.vignettes figcaption{font-size:.82rem;color:var(--muted);margin-top:4px}
+.projet:nth-of-type(even) .galerie{order:2}
+.contexte{color:var(--muted);font-size:.92rem;margin:6px 0 14px}
+.projet ul{margin:0 0 16px;padding-left:18px}
+.projet li{margin-bottom:6px;max-width:64ch}
+.projet li::marker{color:var(--copper)}
+.stack{display:flex;flex-wrap:wrap;gap:6px;list-style:none;padding:0!important;margin:0}
+.stack li{margin:0;font-size:.82rem;padding:3px 9px;border-radius:3px;background:rgba(31,58,104,.07);color:var(--navy)}
+.stack li::marker{content:""}
+.statut{display:inline-block;font-size:.82rem;color:var(--mask);border:1px solid var(--mask);border-radius:3px;padding:1px 8px;margin-left:8px;vertical-align:middle;font-family:var(--body);font-weight:500}
+@media (max-width:820px){.projet{grid-template-columns:1fr;gap:20px}.projet:nth-of-type(even) .visuel{order:0}}
+
+/* Autres projets */
+.autres{list-style:none;padding:0;margin:0;display:grid;gap:0}
+.autres li{display:grid;grid-template-columns:260px 1fr;gap:24px;padding:16px 0;border-bottom:1px solid var(--line)}
+.autres strong{font-family:var(--head);font-stretch:100%;font-size:1.05rem}
+.autres span{color:var(--muted);font-size:.9rem;display:block}
+@media (max-width:720px){.autres li{grid-template-columns:1fr;gap:4px}}
+
+/* Compétences */
+.comp{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:0 48px}
+.comp div{padding:14px 0;border-bottom:1px solid var(--line)}
+.comp dt{font-weight:600;color:var(--navy);margin-bottom:2px}
+.comp dd{margin:0;color:var(--ink)}
+
+/* Parcours : vraie chronologie */
+.chrono{list-style:none;margin:0;padding:0 0 0 22px;border-left:2px solid var(--copper)}
+.chrono li{position:relative;padding:0 0 26px 18px}
+.chrono li::before{content:"";position:absolute;left:-30px;top:6px;width:12px;height:12px;border-radius:50%;background:var(--paper);border:2px solid var(--copper)}
+.chrono time{font-size:.88rem;color:var(--mask);font-weight:600}
+.chrono strong{display:block;font-family:var(--head);font-stretch:100%;font-size:1.1rem}
+.chrono span{color:var(--muted);font-size:.93rem}
+
+/* Contact */
+.contact{background:var(--navy);color:var(--white);border-top:0}
+.contact h2{color:var(--white)}
+.contact p{color:#DCE3EE}
+.contact a{color:var(--white)}
+.contact .actions .btn{border-color:var(--white);color:var(--white)}
+.contact .actions .btn.primary{background:var(--white);color:var(--navy)}
+.contact .actions .btn:hover{background:var(--copper);border-color:var(--copper);color:var(--white)}
+footer{background:var(--navy);color:#AFBBD0;font-size:.85rem;padding:0 0 28px}
+</style>
+</head>
+<body>
+
+<nav aria-label="Navigation principale">
+  <div class="wrap">
+    <a class="brand" href="#top">Lumière Agonsanou</a>
+    <ul>
+      <li><a href="#projets">Projets</a></li>
+      <li><a href="#competences">Compétences</a></li>
+      <li><a href="#parcours">Parcours</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <svg class="trace" viewBox="0 0 1200 60" preserveAspectRatio="none" aria-hidden="true">
+    <path pathLength="1" d="M0 44 H300 L324 20 H700 L724 44 H1200"/>
+  </svg>
+  <div class="wrap">
+    <img class="portrait" src="assets/img/photo.jpg" alt="Portrait de Lumière Agonsanou" width="176" height="176">
+    <div>
+      <h1>Lumière Agonsanou</h1>
+      <p class="role">Étudiant ingénieur en électronique embarquée, hardware et firmware, à l'ESEO</p>
+      <p class="dispo">Je cherche un stage de fin d'études de 6 mois à partir de février 2027, en électronique embarquée ou électronique de puissance.</p>
+      <div class="actions">
+        <a class="btn primary" href="https://www.linkedin.com/in/lumi%C3%A8re-agonsanou-0b9336237/" target="_blank" rel="noopener">LinkedIn</a>
+        <a class="btn" href="https://github.com/Lumiereags" target="_blank" rel="noopener">GitHub</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+<section id="projets">
+  <div class="wrap">
+    <h2>Projets</h2>
+
+    <article class="projet">
+      <div class="galerie">
+        <figure class="visuel" data-label="Photo à venir : OptiSphere V4"><img src="assets/img/japon.jpg" alt="Démonstration d'OptiSphere V4 devant le poster à la conférence SI2025" loading="lazy" onerror="this.parentElement.classList.add('empty')"></figure>
+        <div class="vignettes">
+          <figure><a href="assets/img/japon-proto.jpg" target="_blank" rel="noopener"><img src="assets/img/japon-proto.jpg" alt="Prototype OptiSphere V4 annoté : sphère, vérin linéaire, rail circulaire, moteurs, boîtier PCB" loading="lazy"></a><figcaption>Le prototype et ses sous-ensembles</figcaption></figure>
+          <figure><a href="assets/img/japon-ihm.jpg" target="_blank" rel="noopener"><img src="assets/img/japon-ihm.jpg" alt="IHM PyQt6 : flux caméra d'un escargot dans la sphère et visualisation 3D" loading="lazy"></a><figcaption>L'IHM pendant le test de l'escargot</figcaption></figure>
+          <figure><a href="assets/img/japon-dessus.jpg" target="_blank" rel="noopener"><img src="assets/img/japon-dessus.jpg" alt="OptiSphere V4 vu de dessus, avec une règle graduée pour l'échelle" loading="lazy"></a><figcaption>Vue de dessus, avec l'échelle</figcaption></figure>
+          <figure><a href="assets/OptiSphere_V4_poster_SI2025.pdf" target="_blank" rel="noopener"><img class="poster" src="assets/img/japon-poster.jpg" alt="Poster OptiSphere V4 présenté à SI2025" loading="lazy"></a><figcaption>Le poster SI2025 (PDF)</figcaption></figure>
+        </div>
+      </div>
+      <div>
+        <h3>OptiSphere V4, plateforme sphérique pour l'observation biologique en temps réel</h3>
+        <p class="contexte">Stage R&amp;D au Galipon Lab, Université de Yamagata (Japon), juillet à décembre 2025</p>
+        <p>L'échantillon est placé dans une sphère transparente que le système oriente sur trois axes (tangage, roulis, lacet) pour l'observer au microscope sous tous les angles. Un bras rétractable unique, qui tourne autour de la sphère, remplace les deux bras de la version précédente : moins de moteurs et une sphère plus simple à mettre en place. Validé en suivant un escargot qui rampe à l'intérieur de la sphère, comme sur une surface infinie.</p>
+        <ul>
+          <li>Motorisation : servomoteurs Dynamixel XC330 chaînés sur bus UART (U2D2), vérin électrique 12 V piloté par L298N, Raspberry Pi</li>
+          <li>Commande : réglage PID et mode PWM des servomoteurs</li>
+          <li>Logiciel : serveur WebSocket sur Raspberry Pi, machine à états, IHM Python/PyQt6 avec visualisation 3D</li>
+          <li>Hardware : PCB sous Altium Designer et alimentation buck 12→5 V simulée sous LTspice</li>
+          <li>Mécanique : conception 3D sous Fusion 360 et SolidWorks, impression 3D, slip ring</li>
+          <li>Premier auteur du poster présenté à la conférence SI2025 à Hiroshima (<a href="assets/OptiSphere_V4_poster_SI2025.pdf" target="_blank" rel="noopener">voir le poster en PDF</a>)</li>
+        </ul>
+        <ul class="stack"><li>Dynamixel</li><li>Raspberry Pi</li><li>Python</li><li>PyQt6</li><li>WebSocket</li><li>Altium</li><li>LTspice</li><li>Fusion 360</li></ul>
+      </div>
+    </article>
+
+    <article class="projet">
+      <figure class="visuel schema">
+        <svg viewBox="0 0 480 360" role="img" aria-label="Schéma synoptique : la carte centrale nRF52832 lit les capteurs BMP180, MAX30102 et MLX90614 en I2C et transmet en BLE à la carte périphérique nRF52832, qui affiche sur un écran OLED SSD1309 en SPI">
+          <style>
+            .b{fill:#fff;stroke:#1F3A68;stroke-width:1.6}
+            .m{fill:#1F3A68}
+            .t{font:600 13px 'IBM Plex Sans',Arial,sans-serif;fill:#172234;text-anchor:middle}
+            .tw{font:600 13px 'IBM Plex Sans',Arial,sans-serif;fill:#fff;text-anchor:middle}
+            .s{font:400 11px 'IBM Plex Sans',Arial,sans-serif;fill:#56606E;text-anchor:middle}
+            .bus{stroke:#2A6E5C;stroke-width:2;fill:none}
+            .rf{stroke:#B5733A;stroke-width:2;fill:none;stroke-dasharray:6 5}
+            .lb{font:600 11px 'IBM Plex Sans',Arial,sans-serif;fill:#2A6E5C}
+          </style>
+          <rect class="m" x="30" y="40" width="160" height="56" rx="4"/>
+          <text class="tw" x="110" y="64">Carte centrale</text><text class="tw" x="110" y="82" style="font-weight:400;font-size:11px">nRF52832</text>
+          <rect class="m" x="290" y="40" width="160" height="56" rx="4"/>
+          <text class="tw" x="370" y="64">Carte périphérique</text><text class="tw" x="370" y="82" style="font-weight:400;font-size:11px">nRF52832</text>
+          <path class="rf" d="M190 68 H290"/>
+          <text class="lb" x="240" y="58" text-anchor="middle" style="fill:#B5733A">BLE (NUS)</text>
+          <path class="bus" d="M110 96 V310 M110 150 H60 M110 220 H60 M110 290 H60"/>
+          <text class="lb" x="118" y="124">I2C</text>
+          <rect class="b" x="20" y="126" width="150" height="46" rx="3"/><text class="t" x="95" y="146">BMP180</text><text class="s" x="95" y="162">pression, température</text>
+          <rect class="b" x="20" y="196" width="150" height="46" rx="3"/><text class="t" x="95" y="216">MAX30102</text><text class="s" x="95" y="232">fréquence cardiaque, SpO2</text>
+          <rect class="b" x="20" y="266" width="150" height="46" rx="3"/><text class="t" x="95" y="286">MLX90614</text><text class="s" x="95" y="302">température infrarouge</text>
+          <path class="bus" d="M370 96 V150"/>
+          <text class="lb" x="378" y="124">SPI</text>
+          <rect class="b" x="295" y="150" width="150" height="56" rx="3"/><text class="t" x="370" y="174">OLED SSD1309</text><text class="s" x="370" y="192">128 × 64, driver maison</text>
+        </svg>
+      </figure>
+      <div>
+        <h3>Chaîne de mesure sans fil BLE sur nRF52</h3>
+        <p class="contexte">Projet ESEO « Conception et réalisation d'un objet connecté », 2025, en binôme</p>
+        <p>Deux cartes nRF52832 reliées en Bluetooth Low Energy : l'une interroge des capteurs biométriques et environnementaux, l'autre affiche les mesures en temps réel sur un écran OLED. Un sous-ensemble du projet d'optimisation du vélo mobile.</p>
+        <ul>
+          <li>Capteurs en I2C, pilotés registre par registre : BMP180 (pression, température), MAX30102 (fréquence cardiaque, SpO2), MLX90614 (température infrarouge)</li>
+          <li>Driver maison pour l'écran OLED SSD1309 en SPI : séquence d'initialisation, framebuffer de 1 Ko, polices et affichage dynamique</li>
+          <li>Liaison BLE centrale/périphérique avec le Nordic UART Service (SDK Nordic)</li>
+          <li>PCB de la carte centrale, alimenté par batterie</li>
+        </ul>
+        <ul class="stack"><li>nRF52832</li><li>C</li><li>SDK Nordic</li><li>BLE</li><li>I2C</li><li>SPI</li><li>PCB</li></ul>
+      </div>
+    </article>
+
+    <article class="projet">
+      <figure class="visuel contain" data-label="Photo à venir : carte Basys 3 ou écran Pong"><img src="assets/img/fpga.jpg" alt="Carte FPGA Digilent Basys 3 (Xilinx Artix-7)" loading="lazy" onerror="this.parentElement.classList.add('empty')"><figcaption class="credit">Photo : Digilent</figcaption></figure>
+      <div>
+        <h3>Projets FPGA sur Basys 3</h3>
+        <p class="contexte">Projets ESEO, 2025</p>
+        <p>Deux projets de conception numérique sur FPGA, de la description RTL jusqu'à l'implémentation sur carte.</p>
+        <ul>
+          <li>Acquisition de capteurs : interfaces SPI et I2C, ADC et DMA, lecture d'un capteur de température et d'un joystick</li>
+          <li>Jeu Pong : conception RTL en VHDL (machine à états, distribution d'horloge, sortie VGA), simulation ModelSim, implémentation sous Vivado</li>
+        </ul>
+        <ul class="stack"><li>VHDL</li><li>Vivado</li><li>ModelSim</li><li>SPI</li><li>I2C</li><li>VGA</li></ul>
+      </div>
+    </article>
+
+    <article class="projet">
+      <figure class="visuel" data-label="Photo à venir : ventilateur et écran TFT"><img src="assets/img/ventilateur.jpg" alt="Ventilateur autonome en mode AUTO : écran TFT affichant 24,7 °C et une vitesse de 50 %" loading="lazy" onerror="this.parentElement.classList.add('empty')"></figure>
+      <div>
+        <h3>Ventilateur autonome piloté par écran TFT</h3>
+        <p class="contexte">Projet personnel, conçu et réalisé de A à Z</p>
+        <p>Un ventilateur qui régule sa vitesse selon la température ambiante, ou se règle à la main depuis une interface sur écran TFT. Électronique, firmware et mécanique sont entièrement faits maison.</p>
+        <ul>
+          <li>Mode AUTO : régulation de la vitesse en PWM en fonction de la température mesurée par un capteur BMP180</li>
+          <li>Mode MANUEL : réglage de la vitesse de 0 à 100 % à l'encodeur rotatif</li>
+          <li>Interface sur écran TFT (TFT_eSPI) : sélection du mode, affichage de la température et jauge de vitesse</li>
+          <li>Mécanique : boîtier, carter et hélice conçus et imprimés en 3D</li>
+        </ul>
+        <ul class="stack"><li>ESP32</li><li>C++</li><li>TFT_eSPI</li><li>BMP180</li><li>I2C</li><li>PWM</li><li>Impression 3D</li></ul>
+      </div>
+    </article>
+
+    <article class="projet">
+      <div class="galerie">
+        <div class="vignettes">
+          <figure><a href="assets/img/tripflex-accueil.jpg" target="_blank" rel="noopener"><img src="assets/img/tripflex-accueil.jpg" alt="TripFlex : écran d'accueil avec les actions Planifier un itinéraire et Découvrir" loading="lazy"></a><figcaption>Écran d'accueil</figcaption></figure>
+          <figure><a href="assets/img/tripflex-carnet.jpg" target="_blank" rel="noopener"><img src="assets/img/tripflex-carnet.jpg" alt="TripFlex : écran Carnet avec les itinéraires passés et la section Notes et souvenirs à venir" loading="lazy"></a><figcaption>Écran Carnet</figcaption></figure>
+        </div>
+      </div>
+      <div>
+        <h3>TripFlex, planificateur de visites touristiques <span class="statut">Prototype</span></h3>
+        <p class="contexte">Projet personnel, 2025</p>
+        <p>Une application mobile qui planifie une journée de visite en fonction de l'affluence en temps réel, puis ajuste le parcours si une activité est saturée.</p>
+        <ul>
+          <li>API REST Node.js/Express avec authentification (bcrypt, JWT) et e-mails transactionnels</li>
+          <li>Base PostgreSQL via Prisma, validation des données avec Zod</li>
+          <li>Application React Native en TypeScript : accueil, découverte de lieux, planification d'itinéraire ; carnet de voyage en cours</li>
+        </ul>
+        <ul class="stack"><li>React Native</li><li>TypeScript</li><li>Node.js</li><li>Express</li><li>PostgreSQL</li><li>Prisma</li><li>JWT</li></ul>
+      </div>
+    </article>
+
+    <h3 style="margin:48px 0 8px">Autres projets</h3>
+    <ul class="autres">
+      <li><strong>Pilotage IoT sur ESP32</strong><div>Contrôle à distance d'actionneurs par requêtes JSON en Wi-Fi.<span>Projet ESEO, 2025, 1 mois</span></div></li>
+    </ul>
+  </div>
+</section>
+
+<section id="competences">
+  <div class="wrap">
+    <h2>Compétences</h2>
+    <dl class="comp">
+      <div><dt>Conception hardware</dt><dd>Altium Designer, KiCad, routage CEM, alimentations à découpage, batteries LiPo</dd></div>
+      <div><dt>Simulation</dt><dd>LTspice, ADS (RF et micro-ondes), ModelSim</dd></div>
+      <div><dt>FPGA</dt><dd>VHDL, Verilog, Vivado, Basys 3</dd></div>
+      <div><dt>Programmation et firmware</dt><dd>C/C++ embarqué, Python, nRF52, ESP32, Raspberry Pi</dd></div>
+      <div><dt>Protocoles</dt><dd>SPI, I2C, UART, BLE, Wi-Fi, LoRa, MQTT, WebSocket</dd></div>
+      <div><dt>Mesure et caractérisation RF</dt><dd>VNA (paramètres S), oscilloscope, générateur de fréquence, analyseur de spectre</dd></div>
+      <div><dt>Logiciel et outils</dt><dd>PyQt6, Git, SolidWorks, Fusion 360</dd></div>
+      <div><dt>Langues</dt><dd>Français, anglais (B2)</dd></div>
+    </dl>
+  </div>
+</section>
+
+<section id="parcours">
+  <div class="wrap">
+    <h2>Parcours</h2>
+    <ol class="chrono">
+      <li><time>2021 – 2023</time><strong>Classes préparatoires intégrées ESEO, ISAO</strong><span>Cotonou, Bénin, option MPSI</span></li>
+      <li><time>2023</time><strong>Cycle ingénieur ESEO</strong><span>Angers, spécialisation électronique embarquée, diplôme en 2027</span></li>
+      <li><time>Juillet – décembre 2025</time><strong>Stage R&amp;D, Galipon Lab, Université de Yamagata</strong><span>Yonezawa, Japon, pendant l'année de césure</span></li>
+      <li><time>Février – août 2026</time><strong>Technicien en électronique, ODEA</strong><span>Avrillé, CDD en production et contrôle qualité de cartes électroniques</span></li>
+      <li><time>2026 – 2027</time><strong>Dernière année ESEO</strong><span>Puis stage de fin d'études à partir de février 2027</span></li>
+    </ol>
+  </div>
+</section>
+
+<section class="contact" id="contact">
+  <div class="wrap">
+    <h2>Contact</h2>
+    <p>Vous avez un stage en électronique embarquée ou en électronique de puissance ? Écrivez-moi, je réponds rapidement.</p>
+    <div class="actions" style="margin-top:20px">
+      <a class="btn primary" href="mailto:lumiereagonsanou20@gmail.com">lumiereagonsanou20@gmail.com</a>
+      <a class="btn" href="tel:+33674295172">06 74 29 51 72</a>
+      <a class="btn" href="https://www.linkedin.com/in/lumi%C3%A8re-agonsanou-0b9336237/" target="_blank" rel="noopener">LinkedIn</a>
+      <a class="btn" href="https://github.com/Lumiereags" target="_blank" rel="noopener">GitHub</a>
+    </div>
+  </div>
+</section>
+</main>
+<footer><div class="wrap">Angers, France. Permis B.</div></footer>
+</body>
+</html>
