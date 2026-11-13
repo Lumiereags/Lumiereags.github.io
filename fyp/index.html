@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Follow Your Patient, la carte en rotation | Lumière Agonsanou</title>
+<style>
+  :root { color-scheme: dark; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; background: #03050c; color: #dfe9f5;
+    font-family: ui-monospace, "SF Mono", "Cascadia Code", Consolas, Menlo, monospace; }
+  .stage { position: relative; width: 100%; height: 100vh; min-height: 260px; overflow: hidden;
+    background: radial-gradient(ellipse at 50% 45%, #0d1a3a 0%, #050814 55%, #02030a 100%); }
+  #fx { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+  .scene { position: absolute; inset: 0; display: grid; place-items: center; perspective: 1500px; perspective-origin: 50% 46%; }
+  .rig { position: relative; width: min(58vmin, 560px); aspect-ratio: 1100 / 1137;
+    transform-style: preserve-3d; will-change: transform; }
+  .ly { position: absolute; inset: 0; width: 100%; height: 100%; display: block; backface-visibility: visible;
+    will-change: transform, opacity; user-select: none; -webkit-user-drag: none; }
+  .flow {
+    background-image: repeating-linear-gradient(118deg, rgba(120,240,255,0) 0 46px, rgba(150,245,255,.95) 66px, #fff 74px, rgba(120,240,255,0) 96px 170px);
+    background-size: 340px 340px; animation: flow 1.1s linear infinite;
+    -webkit-mask-image: url(trk.webp); mask-image: url(trk.webp);
+    -webkit-mask-size: 100% 100%; mask-size: 100% 100%; opacity: 0; }
+  @keyframes flow { from { background-position: 0 0; } to { background-position: 340px 0; } }
+  .scan { position: absolute; left: -6%; right: -6%; height: 3px; top: 0; opacity: 0;
+    background: linear-gradient(90deg, transparent, #7ff0ff 15%, #fff 50%, #7ff0ff 85%, transparent);
+    box-shadow: 0 0 18px 4px rgba(111,227,255,.8); }
+  .glow { position: absolute; width: 16%; aspect-ratio: 1; margin: -8% 0 0 -8%; border-radius: 50%; opacity: 0; pointer-events: none; }
+  .glow.g { background: radial-gradient(circle, rgba(170,255,170,1) 0, rgba(60,255,90,.75) 22%, rgba(60,255,90,0) 68%); }
+  .glow.r { width: 34%; margin: -17% 0 0 -17%; background: radial-gradient(circle, rgba(255,210,215,1) 0, rgba(255,40,70,.8) 24%, rgba(255,40,70,0) 68%); }
+  .title { position: absolute; left: 20px; top: 16px; pointer-events: none; }
+  .title h1 { margin: 0; font-size: clamp(15px, 2.4vw, 24px); letter-spacing: .18em; font-weight: 700; color: #f2f7ff; }
+  .title p { margin: 4px 0 0; font-size: clamp(10px, 1.3vw, 12.5px); color: #8296b3; letter-spacing: .05em; max-width: 60ch; }
+  .legend { position: absolute; right: 20px; top: 18px; display: flex; flex-direction: column; gap: 6px; opacity: 0; transition: opacity .4s; pointer-events: none; font-size: 12px; }
+  .legend span { display: flex; align-items: center; gap: 8px; justify-content: flex-end; color: #c7d5ea; }
+  .legend i { width: 14px; height: 14px; border: 1px solid rgba(255,255,255,.35); display: inline-block; }
+  .caption { position: absolute; left: 20px; bottom: 20px; right: 190px; font-size: clamp(12px, 1.7vw, 16px);
+    color: #9fe8ff; letter-spacing: .08em; text-wrap: balance; pointer-events: none; }
+  .caption b { color: #fff; }
+  .controls { position: absolute; right: 16px; bottom: 16px; display: flex; gap: 8px; }
+  button { font: inherit; font-size: 13px; color: #dfe9f5; background: rgba(16, 26, 52, .85);
+    border: 1px solid #2b3f6b; border-radius: 6px; padding: 8px 12px; cursor: pointer; }
+  button:hover { background: #18274d; border-color: #4f6fb0; }
+  button:focus-visible { outline: 2px solid #6fe3ff; outline-offset: 2px; }
+  .bar { position: absolute; left: 0; bottom: 0; height: 3px; background: #4aa3ff; width: 0; }
+  .veil { position: absolute; inset: 0; background: #02030a; opacity: 0; pointer-events: none; }
+</style>
+</head>
+<body>
+<div class="stage" id="stage">
+  <canvas id="fx" aria-hidden="true"></canvas>
+  <div class="scene" role="img" aria-label="Animation : la carte Follow Your Patient, telle qu'elle apparaît dans Altium Designer, tourne debout sur son axe vertical. Le routage apparaît d'abord seul, puis un balayage révèle la vue 3D bleue avec les composants d'un côté et le module Walter de l'autre, les pistes s'illuminent, les LED et le capteur pulsent, et les couches de cuivre se séparent en vue éclatée.">
+    <div class="rig" id="rig">
+      <img class="ly sl" src="sil.webp" alt="">
+      <img class="ly sl" src="sil.webp" alt="">
+      <img class="ly sl" src="sil.webp" alt="">
+      <img class="ly sl" src="sil.webp" alt="">
+      <img class="ly sl" src="sil.webp" alt="">
+      <img class="ly" id="bot" src="bot.webp" alt="">
+      <img class="ly" id="routeB" src="route.webp" alt="">
+      <img class="ly" id="boardB" src="bot3d.webp" alt="" style="height:130%">
+      <img class="ly" id="wshadow" src="walter.webp" alt="" style="height:130%;filter:brightness(0) blur(7px)">
+      <img class="ly" id="walter" src="walter.webp" alt="" style="height:130%">
+      <div class="ly" id="fxlB">
+        <div class="glow g" data-led="0" style="left:94.3%;top:60.8%"></div>
+        <div class="glow g" data-led="1" style="left:94.3%;top:68.6%"></div>
+        <div class="glow g" data-led="2" style="left:94.3%;top:75.6%"></div>
+        <div class="glow g" data-led="3" style="left:13.6%;top:37.7%"></div>
+        <div class="glow g" data-led="4" style="left:20.8%;top:40.2%"></div>
+      </div>
+      <img class="ly" id="route" src="route.webp" alt="">
+      <img class="ly" id="board" src="top3d.webp" alt="" style="height:112%">
+      <div class="ly flow" id="flow"></div>
+      <img class="ly" id="top" src="top.webp" alt="">
+      <div class="ly" id="fxl">
+        <div class="scan" id="scan"></div>
+        <div class="glow r" id="gU6" style="left:57.6%;top:75.6%"></div>
+      </div>
+    </div>
+  </div>
+  <div class="title">
+    <h1>FOLLOW YOUR PATIENT</h1>
+    <p>Vue 3D Altium des deux faces (recolorée en bleu) et routage 2D de la carte</p>
+  </div>
+  <div class="legend" id="legend">
+    <span>Top Layer <i style="background:#ff3c3c"></i></span>
+    <span>Carte (vue 3D) <i style="background:#1d3fae"></i></span>
+    <span>Bottom Layer <i style="background:#3c8cff"></i></span>
+  </div>
+  <div class="caption" id="cap"></div>
+  <div class="controls">
+    <button id="pause" type="button">Pause</button>
+    <button id="replay" type="button">Rejouer</button>
+  </div>
+  <div class="bar" id="bar"></div>
+  <div class="veil" id="veil"></div>
+</div>
+<script>
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var rig = $('rig'), board = $('board'), route = $('route'), top = $('top'), bot = $('bot'),
+      flow = $('flow'), boardB = $('boardB'), routeB = $('routeB'), fxlB = $('fxlB'), walter = $('walter'), wshadow = $('wshadow'), scan = $('scan'), gU6 = $('gU6'), fxl = $('fxl'), legend = $('legend'),
+      cap = $('cap'), bar = $('bar'), veil = $('veil'), cv = $('fx'), g = cv.getContext('2d');
+  var leds = Array.prototype.slice.call(document.querySelectorAll('.glow.g'));
+  var slices = Array.prototype.slice.call(document.querySelectorAll('.sl'));
+  var TOTAL = 19, T = 0, last = 0, paused = false;
+  var W = 0, H = 0, DPR = 1;
+
+  function resize() {
+    DPR = Math.min(2, window.devicePixelRatio || 1);
+    var r = cv.getBoundingClientRect(); W = r.width; H = r.height;
+    cv.width = Math.round(W * DPR); cv.height = Math.round(H * DPR);
+  }
+  window.addEventListener('resize', resize); resize();
+
+  function clamp(v) { return v < 0 ? 0 : v > 1 ? 1 : v; }
+  function ease(u) { u = clamp(u); return u * u * (3 - 2 * u); }
+  function beat(t) { var f = (t * 1.2) % 1, d = (f - .4) / .08; return Math.exp(-d * d); }
+
+  /* particules d'arrière-plan et étincelles */
+  var stars = [], sparks = [], rings = [];
+  for (var i = 0; i < 90; i++) stars.push({ x: Math.random(), y: Math.random(), z: .3 + Math.random() * .7, p: Math.random() * 6.28 });
+  function burst(n, pow, col) {
+    for (var i = 0; i < n; i++) {
+      var a = Math.random() * 6.2832, v = (.3 + Math.random()) * pow;
+      sparks.push({ x: W / 2, y: H * .5, vx: Math.cos(a) * v, vy: Math.sin(a) * v, l: 1, c: col });
+    }
+    rings.push({ r: 20, l: 1, c: col });
+  }
+  var fired = {};
+  function once(key, t, at, fn) { if (t >= at && !fired[key]) { fired[key] = true; fn(); } }
+
+  var CAPS = [
+    [0, 'Chargement de <b>PCB1.PcbDoc</b>…'],
+    [2, '<b>Routage seul</b> : pistes Top (rouge) et Bottom (bleu)'],
+    [3.2, 'Passage en <b>vue 3D</b> : composants et module Walter'],
+    [5.4, 'Le module <b>Walter</b> se décolle de ses connecteurs'],
+    [7.4, '<b>Mise sous tension</b> : le courant parcourt les pistes'],
+    [10.5, '<b>Vue éclatée</b> des couches de cuivre'],
+    [14.5, 'Réassemblage…'],
+    [16, '<b>FYP</b>, carte 2 couches conçue sous Altium Designer']
+  ];
+  var capIdx = -1;
+
+  function setZ(el, z, extra) { el.style.transform = 'translateZ(' + z.toFixed(1) + 'px)' + (extra || ''); }
+
+  function draw(t, dt) {
+    var size = rig.offsetWidth;
+    /* caméra : carte debout, rotation autour de l'axe vertical */
+    var intro = 1 - ease(t / 2.2);
+    var e = t < 10.5 ? 0 : t < 14.5 ? ease((t - 10.5) / 1.2) : 1 - ease((t - 14.5) / .9);
+    var fin = ease((t - 15.4) / 1.6) * (1 - ease((t - 17.6) / 1.2));
+    var ry = 34 * t + intro * 900 + ease((t - 14.5) / 1.5) * 360 + Math.sin(t * 1.3) * 6;
+    var rx = -9 + 5 * Math.sin(t * .7) - e * 6;
+    var rz = 2.5 * Math.sin(t * .45);
+    var sc = (0.12 + 0.88 * ease(t / 2)) * (1 - e * .1) * (1 + .02 * beat(t) * clamp((t - 6.2)));
+    var bob = Math.sin(t * 1.1) * size * .018 - intro * H * .5;
+    rig.style.transform = 'translateY(' + bob.toFixed(1) + 'px) scale(' + sc.toFixed(3) + ') rotateX(' + rx.toFixed(2) + 'deg) rotateZ(' + rz.toFixed(2) + 'deg) rotateY(' + ry.toFixed(2) + 'deg)';
+
+    /* épaisseur du circuit */
+    for (var i = 0; i < slices.length; i++) setZ(slices[i], (i - 2) * 1.8);
+
+    /* balayage : routage seul puis plan de masse */
+    var r = ease((t - 3.2) / 2.6);
+    board.style.clipPath = 'inset(0 0 ' + ((1 - r) * 100).toFixed(2) + '% 0)';
+    board.style.opacity = (t < 3.2 ? 0 : 1 - e * .25).toFixed(3);
+    route.style.opacity = (r >= 1 ? 0 : 1).toFixed(2);
+    scan.style.top = (r * 100).toFixed(2) + '%';
+    scan.style.opacity = (r > 0 && r < 1) ? 1 : 0;
+    setZ(route, 5.6); setZ(board, 5.8);
+    boardB.style.clipPath = board.style.clipPath; boardB.style.opacity = board.style.opacity; routeB.style.opacity = route.style.opacity;
+    setZ(routeB, -5.6); setZ(boardB, -5.8);
+    var lift = size * (.085 + .03 * Math.sin(t * 1.7) + .2 * e) * ease((t - 5.4) / 1.2);
+    walter.style.clipPath = wshadow.style.clipPath = board.style.clipPath;
+    walter.style.opacity = t < 3.2 ? 0 : 1; wshadow.style.opacity = t < 3.2 ? 0 : (.45 * ease((t - 5.4) / 1.2)).toFixed(3);
+    setZ(wshadow, -6.3); setZ(walter, -6.6 - lift);
+
+    /* courant dans les pistes */
+    var pw = clamp((t - 6.2) / .6) * (1 - e) * (t < 18.4 ? 1 : 0);
+    flow.style.opacity = (pw * .8).toFixed(3); setZ(flow, 6.4);
+
+    /* vue éclatée des couches */
+    var d = size * .34 * e;
+    setZ(top, 6.6 + d); setZ(bot, -6.8 - d);
+    top.style.opacity = (e > 0 ? 1 : 0); bot.style.opacity = (e > 0 ? 1 : 0);
+    top.style.filter = bot.style.filter = e > 0 ? 'drop-shadow(0 0 ' + (6 * e).toFixed(1) + 'px currentColor)' : 'none';
+    top.style.color = '#ff5a5a'; bot.style.color = '#4f9bff';
+    legend.style.opacity = e > .3 ? 1 : 0;
+
+    /* lumières */
+    setZ(fxl, 7); setZ(fxlB, -7.4);
+    var hb = beat(t);
+    gU6.style.opacity = (pw * (.35 + .65 * hb) + fin * .5).toFixed(3);
+    gU6.style.transform = 'scale(' + (.8 + .5 * hb).toFixed(3) + ')';
+    for (var k = 0; k < leds.length; k++) {
+      var on = (Math.floor(t * 6) + k * 2) % 5 < 2 ? 1 : .15;
+      leds[k].style.opacity = (pw * on).toFixed(3);
+    }
+
+    /* évènements */
+    once('land', t, 2.0, function () { burst(70, 360, '#6fb7ff'); });
+    once('pour', t, 5.8, function () { burst(50, 300, '#7ff0ff'); });
+    once('power', t, 6.2, function () { burst(110, 520, '#ffffff'); });
+    once('explode', t, 10.6, function () { burst(80, 460, '#ff6a6a'); });
+    once('snap', t, 15.3, function () { burst(140, 620, '#9fd0ff'); });
+
+    /* arrière-plan */
+    g.setTransform(DPR, 0, 0, DPR, 0, 0);
+    g.clearRect(0, 0, W, H);
+    for (var s = 0; s < stars.length; s++) {
+      var st = stars[s], x = ((st.x + t * .012 * st.z) % 1) * W, y = st.y * H;
+      g.globalAlpha = .25 + .5 * Math.abs(Math.sin(t * st.z + st.p)) * st.z;
+      g.fillStyle = '#9cc3ff'; g.fillRect(x, y, 1.6 * st.z, 1.6 * st.z);
+    }
+    g.globalAlpha = 1;
+    /* ondes LTE-M autour de la carte */
+    if (pw > 0) {
+      for (var w = 0; w < 3; w++) {
+        var ph = (t * .6 + w / 3) % 1;
+        g.strokeStyle = 'rgba(111,227,255,' + ((1 - ph) * .35 * pw).toFixed(3) + ')'; g.lineWidth = 2;
+        g.beginPath(); g.ellipse(W / 2, H * .5, size * (.55 + ph * .9), size * (.2 + ph * .35), 0, 0, 6.2832); g.stroke();
+      }
+    }
+    g.globalCompositeOperation = 'lighter';
+    for (var q = rings.length - 1; q >= 0; q--) {
+      var rg = rings[q]; rg.r += 900 * dt; rg.l -= dt * 1.3;
+      if (rg.l <= 0) { rings.splice(q, 1); continue; }
+      g.globalAlpha = rg.l * .7; g.strokeStyle = rg.c; g.lineWidth = 3;
+      g.beginPath(); g.arc(W / 2, H * .5, rg.r, 0, 6.2832); g.stroke();
+    }
+    for (var p = sparks.length - 1; p >= 0; p--) {
+      var sp = sparks[p];
+      sp.x += sp.vx * dt; sp.y += sp.vy * dt; sp.vx *= .985; sp.vy = sp.vy * .985 + 120 * dt; sp.l -= dt * .9;
+      if (sp.l <= 0) { sparks.splice(p, 1); continue; }
+      g.globalAlpha = sp.l; g.fillStyle = sp.c; g.fillRect(sp.x - 1.5, sp.y - 1.5, 3, 3);
+    }
+    g.globalAlpha = 1; g.globalCompositeOperation = 'source-over';
+
+    veil.style.opacity = (t < .4 ? 1 - t / .4 : t > TOTAL - .6 ? (t - (TOTAL - .6)) / .6 : 0).toFixed(3);
+    var ci = 0; for (var c = 0; c < CAPS.length; c++) if (t >= CAPS[c][0]) ci = c;
+    if (ci !== capIdx) { capIdx = ci; cap.innerHTML = CAPS[ci][1]; }
+    bar.style.width = (t / TOTAL * 100) + '%';
+  }
+
+  function reset() { fired = {}; sparks.length = 0; rings.length = 0; }
+  var onScreen = true;
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver(function (en) { onScreen = en[0].isIntersecting; }).observe(document.getElementById('stage'));
+  }
+  function frame(now) {
+    if (!onScreen || document.hidden) { last = now; requestAnimationFrame(frame); return; }
+    var dt = Math.min(.05, (now - last) / 1000 || 0); last = now;
+    if (!paused) { T += dt; if (T >= TOTAL) { T = 0; reset(); } }
+    draw(T, paused ? 0 : dt);
+    requestAnimationFrame(frame);
+  }
+  var bPause = $('pause');
+  bPause.addEventListener('click', function () { paused = !paused; bPause.textContent = paused ? 'Lecture' : 'Pause'; flow.style.animationPlayState = paused ? 'paused' : 'running'; });
+  $('replay').addEventListener('click', function () { T = 0; reset(); paused = false; bPause.textContent = 'Pause'; flow.style.animationPlayState = 'running'; });
+  if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    T = 8; paused = true; bPause.textContent = 'Lecture'; flow.style.animationPlayState = 'paused';
+    ['land', 'pour', 'power'].forEach(function (k) { fired[k] = true; });
+  }
+  requestAnimationFrame(function (n) { last = n; requestAnimationFrame(frame); });
+})();
+</script>
+</body>
+</html>
