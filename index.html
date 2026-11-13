@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Lumière Agonsanou, ingénieur électronique embarquée</title>
-<meta name="description" content="Portfolio de Lumière Agonsanou, étudiant ingénieur ESEO en électronique embarquée : PCB, firmware, FPGA. Recherche un stage de fin d'études à partir de février 2027.">
+<meta name="description" content="Portfolio de Lumière Agonsanou, étudiant ingénieur ESEO en électronique embarquée : PCB, firmware, FPGA. Intéressé par l'intelligence artificielle et ouvert aux projets dans ce domaine.">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -75,6 +75,8 @@ section{padding:64px 0;border-top:1px solid var(--line)}
 .credit{position:absolute;right:8px;bottom:6px;font-size:.72rem;color:var(--muted);background:rgba(255,255,255,.85);padding:1px 6px;border-radius:2px}
 .visuel.schema{display:grid;place-items:center;padding:12px}
 .visuel.schema svg{width:100%;height:100%}
+.visuel.anim{background:#03050c}
+.visuel.anim iframe{width:100%;height:100%;border:0;display:block}
 .visuel.empty img{display:none}
 .visuel.empty::after{content:attr(data-label);position:absolute;inset:0;display:grid;place-items:center;text-align:center;padding:20px;color:var(--muted);font-size:.9rem;
   background:repeating-linear-gradient(45deg,transparent 0 10px,rgba(42,110,92,.05) 10px 20px);border:1px dashed var(--mask)}
@@ -151,7 +153,7 @@ footer{background:var(--navy);color:#AFBBD0;font-size:.85rem;padding:0 0 28px}
     <div>
       <h1>Lumière Agonsanou</h1>
       <p class="role">Étudiant ingénieur en électronique embarquée, hardware et firmware, à l'ESEO</p>
-      <p class="dispo">Je cherche un stage de fin d'études de 6 mois à partir de février 2027, en électronique embarquée ou électronique de puissance.</p>
+      <p class="dispo">Je m'intéresse aussi à l'intelligence artificielle : si vous avez un projet dans ce domaine, n'hésitez pas à me contacter.</p>
       <div class="actions">
         <a class="btn primary" href="https://www.linkedin.com/in/lumi%C3%A8re-agonsanou-0b9336237/" target="_blank" rel="noopener">LinkedIn</a>
         <a class="btn" href="https://github.com/Lumiereags" target="_blank" rel="noopener">GitHub</a>
@@ -188,6 +190,26 @@ footer{background:var(--navy);color:#AFBBD0;font-size:.85rem;padding:0 0 28px}
           <li>Premier auteur du poster présenté à la conférence SI2025 à Hiroshima (<a href="assets/OptiSphere_V4_poster_SI2025.pdf" target="_blank" rel="noopener">voir le poster en PDF</a>)</li>
         </ul>
         <ul class="stack"><li>Dynamixel</li><li>Raspberry Pi</li><li>Python</li><li>PyQt6</li><li>WebSocket</li><li>Altium</li><li>LTspice</li><li>Fusion 360</li></ul>
+      </div>
+    </article>
+
+    <article class="projet">
+      <figure class="visuel anim">
+        <iframe src="fyp/" title="Animation : la carte Follow Your Patient tourne sur elle-même, routage 2D puis vue 3D et vue éclatée des couches" loading="lazy"></iframe>
+      </figure>
+      <div>
+        <h3>Follow Your Patient, boîtier de télésurveillance en LTE-M <span class="statut">En cours</span></h3>
+        <p class="contexte">Projet de télésurveillance patient, 2026</p>
+        <p>Un boîtier porté par le patient mesure la fréquence cardiaque, la SpO2 et la température, puis transmet les mesures en LTE-M vers un broker MQTT. Un Raspberry Pi les reçoit et les affiche. J'ai conçu l'architecture du système et le PCB du boîtier.</p>
+        <ul>
+          <li>Carte 2 couches sous Altium Designer autour d'un module Walter (ESP32-S3 et modem LTE-M), fichiers de fabrication générés pour JLCPCB</li>
+          <li>Capteurs : MAX30102 (fréquence cardiaque, SpO2) en I2C et thermistance NTC, isolée thermiquement du reste de la carte</li>
+          <li>Alimentation sur batterie LiPo : chargeur USB-C BQ24073, jauge MAX17048, interrupteur de puissance TPS22918, régulateur 1,8 V</li>
+          <li>Chaîne de données : MQTT vers un Raspberry Pi, application de visualisation en Python/PyQt5</li>
+          <li>Analyse de cycle de vie du dispositif sous SimaPro</li>
+        </ul>
+        <p><a href="fyp/" target="_blank" rel="noopener">Voir l'animation de la carte en plein écran</a></p>
+        <ul class="stack"><li>Altium</li><li>ESP32-S3</li><li>LTE-M</li><li>MQTT</li><li>I2C</li><li>LiPo</li><li>Raspberry Pi</li><li>PyQt5</li></ul>
       </div>
     </article>
 
@@ -323,7 +345,7 @@ footer{background:var(--navy);color:#AFBBD0;font-size:.85rem;padding:0 0 28px}
 <section class="contact" id="contact">
   <div class="wrap">
     <h2>Contact</h2>
-    <p>Vous avez un stage en électronique embarquée ou en électronique de puissance ? Écrivez-moi, je réponds rapidement.</p>
+    <p>Vous avez un projet en électronique embarquée ou en intelligence artificielle ? N'hésitez pas à me contacter, je réponds rapidement.</p>
     <div class="actions" style="margin-top:20px">
       <a class="btn primary" href="mailto:lumiereagonsanou20@gmail.com">lumiereagonsanou20@gmail.com</a>
       <a class="btn" href="tel:+33674295172">06 74 29 51 72</a>
